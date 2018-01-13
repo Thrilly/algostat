@@ -20,6 +20,7 @@ class bubbleSort
 
 	public function getStatsPerf()
 	{
+		$this->stats = array('nb_it' => "N/A", 'time' => "N/A");
 		return $this->stats;
 	}
 }

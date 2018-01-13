@@ -27,6 +27,11 @@
 	<body>
 		<div class="container">
 			<div class="row">
+				<div class="col-md-12 text-center"><br>
+					<h1><b>Algo Stat 1</b></h1>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-8 text-center"><br><br><br>
 					<form action="?results=show" method="POST">
@@ -51,7 +56,7 @@
 				<div class="col-md-8 text-center"><br><br><br>
 					<code>
 					<?php
-					$stats = "";
+					$stats = array('nb_it' => "N/A", 'time' => "N/A");
 					if (isset($_GET["results"]) && $_GET["results"] == "show") {
 						$str = ($_POST["list"]);
 						switch ($method) {
@@ -59,24 +64,43 @@
 								include("classes/selectSort.php");
 								$sort = new selectSort($str);
 								$sort->toString();
-								$stat = $sort->getStatsPerf();
+								$stats = $sort->getStatsPerf();
 								break;
 							case 'insert':
 								include("classes/insertSort.php");
 								$sort = new insertSort($str);
 								$sort->toString();
-								$stat = $sort->getStatsPerf();
+								$stats = $sort->getStatsPerf();
 								break;
 							default:
 								include("classes/bubbleSort.php");
 								$sort = new bubbleSort($str);
 								$sort->toString();
-								$stat = $sort->getStatsPerf();
+								$stats = $sort->getStatsPerf();
 								break;
 						}
 					}
 					?>
 					</code>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8"><br><br>
+					<table>
+						<tr>
+							<th>Nb itération</th>
+							<th>Temps d'éxécution</th>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $stats["nb_it"]; ?>
+							</td>
+							<td>
+								<?php echo $stats["time"]; ?>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
