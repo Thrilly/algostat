@@ -5,9 +5,22 @@
 class bubbleSort
 {
 	
-	public function process($str)
+	private $listStr;
+	private $stats;
+
+	function __construct($listStr)
 	{
-		echo "Tri a bulle ($str)";
+		$this->listStr = $listStr;
+	}
+
+	public function toString()
+	{
+		echo "Tri à bulles : ".$this->listStr;
+	}
+
+	public function getStatsPerf()
+	{
+		return $this->stats;
 	}
 }
 ?>

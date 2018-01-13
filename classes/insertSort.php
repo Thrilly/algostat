@@ -5,9 +5,22 @@
 class insertSort
 {
 	
-	public function process($str)
+	private $listStr;
+	private $stats;
+
+	function __construct($listStr)
 	{
-		echo "Tri a insertion ($str)";
+		$this->listStr = $listStr;
+	}
+
+	public function toString()
+	{
+		echo "Tri par insertion : ".$this->listStr;
+	}
+
+	public function getStatsPerf()
+	{
+		return $this->stats;
 	}
 }
 ?>

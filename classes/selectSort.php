@@ -4,10 +4,22 @@
 */
 class selectSort
 {
-	
-	public function process($str)
+	private $listStr;
+	private $stats;
+
+	function __construct($listStr)
 	{
-		echo "Tri a sélection ($str)";
+		$this->listStr = $listStr;
+	}
+
+	public function toString()
+	{
+		echo "Tri par selection : ".$this->listStr;
+	}
+
+	public function getStatsPerf()
+	{
+		return $this->stats;
 	}
 }
 ?>
