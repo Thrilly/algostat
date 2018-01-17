@@ -35,7 +35,7 @@ class selectSort
 			$this->stats["nb_it"]++;
 		}
 		$time_end = microtime();
-		$this->stats["time"] = $time_end - $time_start;
+		$this->stats["time"] = round(($time_end - $time_start)/1000, 8);
 		echo "Tri par selection : ".implode(",", $tabList);
 	}
 

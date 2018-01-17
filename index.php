@@ -51,6 +51,8 @@
 					</form>
 				</div>
 			</div>
+			<?php if (isset($_GET["results"])): ?>
+				
 			<div class="row">
 				<div class="col-md-2"></div>
 				<div class="col-md-8 text-center"><br><br><br>
@@ -97,12 +99,13 @@
 								<?php echo $stats["nb_it"]; ?>
 							</td>
 							<td>
-								<?php echo $stats["time"]; ?>
+								<?php echo $stats["time"]; ?> ms
 							</td>
 						</tr>
 					</table>
 				</div>
 			</div>
+			<?php endif ?>
 		</div>
 	</body>
 </html>
