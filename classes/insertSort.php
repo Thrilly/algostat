@@ -6,7 +6,7 @@ class insertSort extends Sort
 
     function getSortedList()
     {
-        $time_start = microtime();
+        $time_start = microtime(true);
         $liste = explode(",", $this->listStr);
         $taille = count($liste);
         for($i = 0; $i < $taille; $i++)
@@ -25,8 +25,8 @@ class insertSort extends Sort
             $liste[$i] = $element_a_inserer;
             $this->stats["nb_it"]++;
         }
-        $time_end = microtime();
-        $this->stats["time"] = round(($time_end - $time_start)/1000, 8);
+        $time_end = microtime(true);
+        $this->stats["time"] = round($time_end - $time_start, 8);
         return $liste;
     }
 }

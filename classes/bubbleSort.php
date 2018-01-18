@@ -7,7 +7,7 @@ class bubbleSort extends Sort
 
 	public function getSortedList()
 	{
-		$time_start = microtime();
+		$time_start = microtime(true);
 		$tabList = explode(",", $this->listStr);
 		$tabSize = count($tabList);
 		for($i = 0; $i < $tabSize; $i++)
@@ -24,7 +24,7 @@ class bubbleSort extends Sort
 				}
 			}
 		}
-		$time_end = microtime();
+		$time_end = microtime(true);
 		$this->stats["time"] = round(($time_end - $time_start)/1000, 8);
 		return $tabList;
 	}
