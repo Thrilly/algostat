@@ -1,23 +1,10 @@
 <?php
+require_once ('Sort.php');
 
-class insertSort
+class insertSort extends Sort
 {
-    private $listStr;
-    private $stats;
 
-    function __construct($listStr)
-    {
-        $this->listStr = $listStr;
-        $this->stats["nb_it"] = 0;
-        $this->stats["time"] = 0;
-    }
-
-    public function getStatsPerf()
-    {
-        return $this->stats;
-    }
-
-    function Tri_insrt()
+    function getSortedList()
     {
         $time_start = microtime();
         $liste = explode(",", $this->listStr);
@@ -40,7 +27,7 @@ class insertSort
         }
         $time_end = microtime();
         $this->stats["time"] = round(($time_end - $time_start)/1000, 8);
-        echo "Tri par insertion : ".implode(",", $liste);
+        return $liste;
     }
 }
 

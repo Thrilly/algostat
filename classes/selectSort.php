@@ -1,20 +1,12 @@
 <?php
+require_once ('Sort.php');
 /**
 * 
 */
-class selectSort
+class selectSort extends Sort
 {
-	private $listStr;
-	private $stats;
 
-	function __construct($listStr)
-	{
-		$this->listStr = $listStr;
-		$this->stats["nb_it"] = 0;
-		$this->stats["time"] = 0;
-	}
-
-	public function toString()
+	public function getSortedList()
 	{
 		$time_start = microtime();
 		$tabList = explode(",", $this->listStr);
@@ -36,12 +28,9 @@ class selectSort
 		}
 		$time_end = microtime();
 		$this->stats["time"] = round(($time_end - $time_start)/1000, 8);
-		echo "Tri par selection : ".implode(",", $tabList);
+		return $tabList;
 	}
 
-	public function getStatsPerf()
-	{
-		return $this->stats;
-	}
+	
 }
 ?>
