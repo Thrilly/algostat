@@ -98,8 +98,6 @@ $showChart = false;
     	<?php 
 		} elseif ($method == "all") { 
 		    $str = ($_POST["list"]);
-
-		    // $str = ($_POST["list"]);
 	    	$select = new selectSort($str);
 	    	$insert = new insertSort($str);
 	    	$bubble = new bubbleSort($str);
@@ -137,7 +135,7 @@ $showChart = false;
 	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
 	        datasets: [{
 	            label: 'Temps d\'éxécution (ms)',
-	            data: [<?php echo $select->getStatsPerf()["time"].",".$insert->getStatsPerf()["time"].",".$bubble->getStatsPerf()["time"] ?>],
+	            data: [<?php echo ($select->getStatsPerf()["time"]).",".($insert->getStatsPerf()["time"]).",".($bubble->getStatsPerf()["time"]);?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
@@ -169,7 +167,7 @@ $showChart = false;
 	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
 	        datasets: [{
 	            label: 'Nombre d\'itérations',
-	            data: [<?php echo $select->getStatsPerf()["nb_it"].",".$insert->getStatsPerf()["nb_it"].",".$bubble->getStatsPerf()["nb_it"] ?>],
+	            data: [<?php echo ($select->getStatsPerf()["nb_it"]/2).",".($insert->getStatsPerf()["nb_it"]/2).",".($bubble->getStatsPerf()["nb_it"]/2)?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
