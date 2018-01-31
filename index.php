@@ -4,8 +4,10 @@ include("classes/insertSort.php");
 include("classes/bubbleSort.php");
 if (isset($_POST["chooseSort"])){
     $method = $_POST["chooseSort"];
+    $str = $_POST["list"];
 }else{
     $method = NULL;
+    $str = NULL;    
 }
 $showChart = false;
 ?>
@@ -29,12 +31,12 @@ $showChart = false;
 <div class="container">
     <div class="row">
         <div class="col-md-12 text-center"><br>
-            <h1><b>Algo Stat 1</b></h1>
+            <h1><a href="index.php">ALGO STAT I</a></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-8 text-center"><br><br><br>
+        <div class="col-md-8 text-center"><br>
             <form action="?results=show" method="POST">
                 <div class="form-group">
                     <label for="chooseSort">Méthode de Tri</label>
@@ -47,9 +49,15 @@ $showChart = false;
                 </div>
                 <div class="form-group">
                     <label for="list">Liste à trier</label>
-                    <input class="form-control" id="lsit" type="text" name="list" value="4,8,7,90,54,34,1,0,6,45">
+                    <input class="form-control" id="lsit" type="text" name="list" value="<?php 
+	                    if ($str != NULL){
+	                    	echo $str;	
+	                    } else {
+	                    	echo "4,7,9,0,67,5,34,87,28,029,893,234,974,392828,485,484";
+	                    }
+                    ?>">
                 </div>
-                <button type="submit" class="btn btn-primary" id="sortProcess">Proceder</button>
+                <a href="docs/rapport.pdf" target="_blank" class="btn btn-light">En savoir plus</a>&nbsp;&nbsp;<button type="submit" class="btn btn-primary" id="sortProcess">Proceder</button>
             </form>
         </div>
     </div>
@@ -60,7 +68,6 @@ $showChart = false;
             <div class="col-md-8 text-center"><br><br><br>
                 <code>
                     <?php
-	    				$str = $_POST["list"];
 	    				$class = $method."Sort";
                         $sort = new $class($str);
                         $sort->toString();
@@ -96,20 +103,29 @@ $showChart = false;
 	    	$select = new selectSort($str);
 	    	$insert = new insertSort($str);
 	    	$bubble = new bubbleSort($str);
-		    $select->getSortedList();
+            $select->getSortedList();
+            $insert->getSortedList();
+		    $bubble->getSortedList();
 		    $showChart = "";
     	?>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 text-center"><br>
+                <code><?php $select->toString()?></code><br>
+                <code><?php $insert->toString()?></code><br>
+                <code><?php $bubble->toString()?></code><br>
+            </div>
+        </div>
     	<div class="row">
-    	<div class="col-md-1"></div>
-        <div class="col-md-5"><br>
-        	<canvas id="myChart" width="100%" height="70%"></canvas>
-        </div>
-        <div class="col-md-5"><br>
-        	<canvas id="myChart2" width="100%" height="70%"></canvas>
-        </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5"><br>
+            	<canvas id="myChart" width="100%" height="70%"></canvas>
+            </div>
+            <div class="col-md-5"><br>
+            	<canvas id="myChart2" width="100%" height="70%"></canvas>
+            </div>
     </div>
     <?php } ?>
-    
 </div>
 </body>
 <script src="assets/js/chart.js"></script>
@@ -120,8 +136,8 @@ $showChart = false;
 	    data: {
 	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
 	        datasets: [{
-	            label: 'Temps d\'éxécution',
-	            data: [12, 19, 3],
+	            label: 'Temps d\'éxécution (ms)',
+	            data: [<?php echo $select->getStatsPerf()["time"].",".$insert->getStatsPerf()["time"].",".$bubble->getStatsPerf()["time"] ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
@@ -153,7 +169,7 @@ $showChart = false;
 	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
 	        datasets: [{
 	            label: 'Nombre d\'itérations',
-	            data: [12, 19, 3],
+	            data: [<?php echo $select->getStatsPerf()["nb_it"].",".$insert->getStatsPerf()["nb_it"].",".$bubble->getStatsPerf()["nb_it"] ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
