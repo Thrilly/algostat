@@ -22,7 +22,7 @@ class Sort
 
 	public function toString()
 	{
-		echo "Tri ". get_class($this) ." : ".implode(",", $this->getSortedList());
+		echo get_class($this) ." : ".implode(",", $this->getSortedList());
 	}
 }
 ?>

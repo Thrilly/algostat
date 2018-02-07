@@ -27,7 +27,7 @@ class selectSort extends Sort
 			$this->stats["nb_it"]++;
 		}
 		$time_end = microtime(true);
-		$this->stats["time"] = round(($time_end - $time_start)/1000, 8);
+		$this->stats["time"] = round(($time_end - $time_start), 8);
 		return $tabList;
 	}
 

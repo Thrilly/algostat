@@ -5,3 +5,9 @@ table td, table th{
 table{
 	width: 100%;
 }
+h1, label, .btn{
+	font-weight: bold;
+}
+body{
+	font-family: 'Trebuchet MS', Helvetica, sans-serif;
+}

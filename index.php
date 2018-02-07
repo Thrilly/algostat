@@ -1,7 +1,14 @@
 <?php
-include("classes/selectSort.php");
-include("classes/insertSort.php");
-include("classes/bubbleSort.php");
+// DECLARE ALL SORT HERE
+$sorts = array(
+    'select',
+    'insert',
+    'bubble'
+    // 'shell',
+    // 'fusion',
+    // 'quick',
+    // 'comb'
+);
 if (isset($_POST["chooseSort"])){
     $method = $_POST["chooseSort"];
     $str = $_POST["list"];
@@ -41,10 +48,12 @@ $showChart = false;
                 <div class="form-group">
                     <label for="chooseSort">Méthode de Tri</label>
                     <select class="form-control" id="chooseSort" name="chooseSort">
-                        <option value="all" <?php if ($method == "all") echo "selected" ?>>Comparer les tris</option>
-                        <option value="select" <?php if ($method == "select") echo "selected" ?>>Tri par Sélection</option>
-                        <option value="insert" <?php if ($method == "insert") echo "selected" ?>>Tri par Insertion</option>
-                        <option value="bubble" <?php if ($method == "bubble") echo "selected" ?>>Tri à Bulle</option>
+                        <option value="all" <?php if ($method == "all") echo "selected" ?>>** COMPARE ALL SORT **</option>
+                        <?php foreach ($sorts as $sort): ?>
+                            <option value="<?php echo $sort ?>" <?php if ($method == $sort) echo "selected" ?>>
+                                <?php echo strtoupper($sort." SORT") ?>
+                            </option>
+                        <?php endforeach ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -68,6 +77,7 @@ $showChart = false;
             <div class="col-md-8 text-center"><br><br><br>
                 <code>
                     <?php
+                        include "classes/".$method."Sort.php";
 	    				$class = $method."Sort";
                         $sort = new $class($str);
                         $sort->toString();
@@ -96,22 +106,25 @@ $showChart = false;
             </div>
         </div>
     	<?php 
-		} elseif ($method == "all") { 
-		    $str = ($_POST["list"]);
-	    	$select = new selectSort($str);
-	    	$insert = new insertSort($str);
-	    	$bubble = new bubbleSort($str);
-            $select->getSortedList();
-            $insert->getSortedList();
-		    $bubble->getSortedList();
-		    $showChart = "";
+		} elseif ($method == "all") {
+
     	?>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 text-center"><br>
-                <code><?php $select->toString()?></code><br>
-                <code><?php $insert->toString()?></code><br>
-                <code><?php $bubble->toString()?></code><br>
+                <code>
+                <?php   
+                $stats = array();
+                foreach ($sorts as $sort) {
+                    include "classes/".$sort."Sort.php";
+                    $sortClassname = $sort."Sort";
+                    $obj = new $sortClassname($str);
+                    $obj->getSortedList();
+                    echo "".$obj->toString()."<br>&nbsp;";
+                    $stats[] = $obj->getStatsPerf();
+                 } 
+                ?>
+                </code>
             </div>
         </div>
     	<div class="row">
@@ -132,10 +145,14 @@ $showChart = false;
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
-	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
+	        labels: <?php echo json_encode($sorts) ?>,
 	        datasets: [{
-	            label: 'Temps d\'éxécution (ms)',
-	            data: [<?php echo ($select->getStatsPerf()["time"]).",".($insert->getStatsPerf()["time"]).",".($bubble->getStatsPerf()["time"]);?>],
+	            label: 'Temps d\'éxécution (microsecondes)',
+	            data: [<?php
+                    foreach ($stats as $stat) {
+                        echo $stat["time"].",";
+                    }
+                    ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
@@ -164,10 +181,14 @@ $showChart = false;
 	var myChart2 = new Chart(ctx2, {
 	    type: 'bar',
 	    data: {
-	        labels: ["Tri par selection", "Tri par insertion", "Tri à bulle"],
+	        labels: <?php echo json_encode($sorts) ?>,
 	        datasets: [{
 	            label: 'Nombre d\'itérations',
-	            data: [<?php echo ($select->getStatsPerf()["nb_it"]/2).",".($insert->getStatsPerf()["nb_it"]/2).",".($bubble->getStatsPerf()["nb_it"]/2)?>],
+	            data: [<?php
+                    foreach ($stats as $stat) {
+                        echo ($stat["nb_it"]/2).",";
+                    }
+                    ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
