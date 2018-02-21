@@ -9,8 +9,6 @@ class shellSort extends Sort
 	public function getSortedList()
 	{
 		$time_start = microtime(true);
-		$tabList = explode(",", $this->listStr);
-
 		$Tableau = explode(",", $this->listStr);
 
 		$Inversion = 0;

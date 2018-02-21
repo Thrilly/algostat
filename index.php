@@ -4,9 +4,9 @@ $sorts = array(
     'select',
     'insert',
     'bubble',
-    'shell'
+    'shell',
     // 'fusion',
-    // 'quick',
+    'quick',
     // 'comb'
 );
 if (isset($_POST["chooseSort"])){
