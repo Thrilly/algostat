@@ -16,20 +16,37 @@ class shellSort extends Sort
             $t[$j] = $current;
         }
     }
-     
+    
     public function getSortedList() {
     	$time_start = microtime(true);
-		$t = explode(",", $this->listStr);
-    	$time_start = microtime(true);
-        $intervalles = explode(",", $this->listStr);
-        for ($ngap=0;$ngap<5;$ngap++) {
-            for ($i=0;$i<$intervalles[$ngap];$i++)
-                $this->insertSort($t,$intervalles[$ngap],$i);
+        $gaps = array(701,301,132,57,23,10,4,1);
+		$array = explode(",", $this->listStr);
+
+        $length=count($array);
+
+        $lgap=count($gaps);
+
+        for ($z=0;$z<$lgap;$z++) {
+            $this->stats["nb_it"]++;
+            $gap=$gaps[$z];
+            for ($i=$gap;$i<$length;$i++) {
+                $this->stats["nb_it"]++;
+                $element=$array[$i];
+                $j=$i;
+                while($j>=$gap && $array[$j-$gap]>$element) {
+                    $this->stats["nb_it"]++;
+                    //move value to right and key to previous smaller index
+                    $array[$j]=$array[$j-$gap];
+                    $j=$j-$gap;
+                    }
+                //put the element at index $j
+                $array[$j]=$element;
+            }
         }
 
         $time_end = microtime(true);
 		$this->stats["time"] = round(($time_end - $time_start), 8);
-		return $t;
+		return $array;
     }
 }
 ?>

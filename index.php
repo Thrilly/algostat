@@ -4,10 +4,10 @@ $sorts = array(
     'select',
     'insert',
     'bubble',
-    // 'shell',
-    // 'fusion',
-    'quick',
-    // 'comb'
+    'shell',
+    'fusion',
+    // 'quick',
+    'comb'
 );
 if (isset($_POST["chooseSort"])){
     $method = $_POST["chooseSort"];
