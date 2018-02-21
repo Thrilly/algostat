@@ -11,7 +11,7 @@ class SORTNAMESort extends Sort
 		$time_start = microtime(true);
 		$NAMEOFTAB = explode(",", $this->listStr);
 
-		// PUT CODE
+		// PUT CODE HERE
 
 		$time_end = microtime(true);
 		$this->stats["time"] = round(($time_end - $time_start), 8);

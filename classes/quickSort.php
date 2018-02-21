@@ -10,6 +10,7 @@ class quickSort extends Sort
         if ($array == null){
             $array = explode(",", $this->listStr);
         }
+        
         $time_start = microtime(true);
         // find array size
         $length = count($array);

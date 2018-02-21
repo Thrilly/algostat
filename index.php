@@ -4,7 +4,7 @@ $sorts = array(
     'select',
     'insert',
     'bubble',
-    'shell',
+    // 'shell',
     // 'fusion',
     'quick',
     // 'comb'
