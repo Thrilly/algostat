@@ -1,8 +1,5 @@
 <?php
 require_once ('Sort.php');
-/**
-* 
-*/
 class bubbleSort extends Sort
 {
 
