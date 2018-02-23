@@ -17,6 +17,7 @@ if (isset($_POST["chooseSort"])){
     $str = NULL;    
 }
 $showChart = false;
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,7 @@ $showChart = false;
                 </div>
                 <div class="form-group">
                     <label for="list">Liste à trier</label>
-                    <input class="form-control" id="lsit" type="text" name="list" value="<?php 
+                    <input class="form-control" id="list" type="text" name="list" value="<?php
 	                    if ($str != NULL){
 	                    	echo $str;	
 	                    } else {
