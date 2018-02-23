@@ -3,11 +3,11 @@
 $sorts = array(
     'select',
     'insert',
-    'bubble'
-    // 'shell',
-    // 'fusion',
-    // 'quick',
-    // 'comb'
+    'bubble',
+    'shell',
+    'fusion',
+    'quick',
+    'comb'
 );
 if (isset($_POST["chooseSort"])){
     $method = $_POST["chooseSort"];
@@ -17,6 +17,7 @@ if (isset($_POST["chooseSort"])){
     $str = NULL;    
 }
 $showChart = false;
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,7 @@ $showChart = false;
                 </div>
                 <div class="form-group">
                     <label for="list">Liste à trier</label>
-                    <input class="form-control" id="lsit" type="text" name="list" value="<?php 
+                    <input class="form-control" id="list" type="text" name="list" value="<?php
 	                    if ($str != NULL){
 	                    	echo $str;	
 	                    } else {
@@ -70,72 +71,83 @@ $showChart = false;
             </form>
         </div>
     </div>
-    <?php if ($method != "all" && $method != NULL){ ?>
+    <?php if (preg_match("#[0-9,]*#", $str)){ ?>
+        <?php if ($method != "all" && $method != NULL){ ?>
 
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center"><br><br><br>
+                    <code>
+                        <?php
+                            include "classes/".$method."Sort.php";
+    	    				$class = $method."Sort";
+                            $sort = new $class($str);
+                            $sort->toString();
+                            $stats = $sort->getStatsPerf();
+                        ?>
+                    </code>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8"><br><br>
+                    <table>
+                        <tr>
+                            <th>Nb itération</th>
+                            <th>Temps d'éxécution</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo $stats["nb_it"]; ?>
+                            </td>
+                            <td>
+                                <?php echo $stats["time"]; ?> ms
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        	<?php 
+    		} elseif ($method == "all") {
+
+        	?>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center"><br>
+                    <code>
+                    <?php   
+                    $stats = array();
+                    foreach ($sorts as $sort) {
+                        include "classes/".$sort."Sort.php";
+                        $sortClassname = $sort."Sort";
+                        $obj = new $sortClassname($str);
+                        $obj->getSortedList();
+                        echo "".$obj->toString()."<br>&nbsp;";
+                        $stats[] = $obj->getStatsPerf();
+                     } 
+                    ?>
+                    </code>
+                </div>
+            </div>
+        	<div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5"><br>
+                	<canvas id="myChart" width="100%" height="70%"></canvas>
+                </div>
+                <div class="col-md-5"><br>
+                	<canvas id="myChart2" width="100%" height="70%"></canvas>
+                </div>
+        </div>
+        <?php } ?>
+    <?php } else { ?>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 text-center"><br><br><br>
                 <code>
-                    <?php
-                        include "classes/".$method."Sort.php";
-	    				$class = $method."Sort";
-                        $sort = new $class($str);
-                        $sort->toString();
-                        $stats = $sort->getStatsPerf();
-                    ?>
+                    Erreur sur le format de la liste
                 </code>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8"><br><br>
-                <table>
-                    <tr>
-                        <th>Nb itération</th>
-                        <th>Temps d'éxécution</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?php echo $stats["nb_it"]; ?>
-                        </td>
-                        <td>
-                            <?php echo $stats["time"]; ?> ms
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    	<?php 
-		} elseif ($method == "all") {
-
-    	?>
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 text-center"><br>
-                <code>
-                <?php   
-                $stats = array();
-                foreach ($sorts as $sort) {
-                    include "classes/".$sort."Sort.php";
-                    $sortClassname = $sort."Sort";
-                    $obj = new $sortClassname($str);
-                    $obj->getSortedList();
-                    echo "".$obj->toString()."<br>&nbsp;";
-                    $stats[] = $obj->getStatsPerf();
-                 } 
-                ?>
-                </code>
-            </div>
-        </div>
-    	<div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-5"><br>
-            	<canvas id="myChart" width="100%" height="70%"></canvas>
-            </div>
-            <div class="col-md-5"><br>
-            	<canvas id="myChart2" width="100%" height="70%"></canvas>
-            </div>
-    </div>
     <?php } ?>
 </div>
 </body>
@@ -149,14 +161,21 @@ $showChart = false;
 	        datasets: [{
 	            label: 'Temps d\'éxécution (microsecondes)',
 	            data: [<?php
-                    foreach ($stats as $stat) {
-                        echo $stat["time"].",";
+                    if (isset($stats)) {
+                        foreach ($stats as $stat) {
+                            echo $stat["time"].",";
+                        }  
                     }
+                    
                     ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)'
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(173, 37, 23, 0.2)',
+                    'rgba(89, 206, 86, 0.2)',
+                    'rgba(11, 80, 230, 0.2)',
+	                'rgba(10, 10, 10, 0.2)'
 	            ],
 	            borderColor: [
 	                'rgba(255,99,132,1)',
@@ -185,19 +204,29 @@ $showChart = false;
 	        datasets: [{
 	            label: 'Nombre d\'itérations',
 	            data: [<?php
-                    foreach ($stats as $stat) {
-                        echo ($stat["nb_it"]/2).",";
+                    if (isset($stats)) {
+                        foreach ($stats as $stat) {
+                            echo ($stat["nb_it"]/2).",";
+                        }
                     }
                     ?>],
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)'
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(173, 37, 23, 0.2)',
+                    'rgba(89, 206, 86, 0.2)',
+                    'rgba(11, 80, 230, 0.2)',
+                    'rgba(10, 10, 10, 0.2)'
 	            ],
 	            borderColor: [
-	                'rgba(255,99,132,1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)'
+	                'rgba(225, 99, 132, 0.2)',
+                    'rgba(34, 162, 235, 0.2)',
+                    'rgba(225, 206, 86, 0.2)',
+                    'rgba(143, 37, 23, 0.2)',
+                    'rgba(69, 206, 86, 0.2)',
+                    'rgba(1, 80, 230, 0.2)',
+                    'rgba(0, 0, 10, 0.2)'
 	            ],
 	            borderWidth: 1
 	        }]
